@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLocale } from "@/i18n/locale-context";
+import { aboutTrustImage, aboutCarImage } from "@/config/contact";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -21,7 +22,25 @@ function About() {
       <main id="main-content" className="container-page max-w-3xl py-14">
         <span className="eyebrow text-primary">{t("about.eyebrow")}</span>
         <h1 className="mt-2 text-4xl font-bold">{t("about.title")}</h1>
-        <div className="prose mt-6 space-y-5 text-muted-foreground">
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <img
+            src={aboutTrustImage}
+            alt={t("about.trustImageAlt")}
+            width={700}
+            height={500}
+            className="aspect-[4/3] w-full rounded-xl object-cover"
+          />
+          <img
+            src={aboutCarImage}
+            alt={t("about.carImageAlt")}
+            width={700}
+            height={500}
+            className="aspect-[4/3] w-full rounded-xl object-cover"
+          />
+        </div>
+
+        <div className="prose mt-8 space-y-5 text-muted-foreground">
           <p>{t("about.p1")}</p>
           <p>{t("about.p2")}</p>
           <p>{t("about.p3")}</p>

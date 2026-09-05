@@ -10,3 +10,11 @@ export const siteContact = {
   email: "darwinwilliams322@gmail.com",
   location: "Cotonou, Bénin",
 } as const;
+
+// Free-to-use stock assets for the homepage/about redesign (no video/photo
+// capture available for the business yet — replace with real media later).
+export const heroVideoUrl = "https://assets.mixkit.co/videos/35540/35540-720.mp4";
+export const aboutTrustImage =
+  "https://images.unsplash.com/photo-1761014586544-53fe5e1f1e25?auto=format&fit=crop&w=1200&q=80";
+export const aboutCarImage =
+  "https://images.unsplash.com/photo-1761738217531-44a249d1dc87?auto=format&fit=crop&w=1200&q=80";

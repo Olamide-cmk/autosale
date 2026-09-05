@@ -11,12 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
+import { Route as ReturnPolicyRouteImport } from './routes/return-policy'
 import { Route as SellCarRouteImport } from './routes/sell-car'
+import { Route as ShopRouteImport } from './routes/shop'
 import { Route as SoldCarsRouteImport } from './routes/sold-cars'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as VedetteRouteImport } from './routes/vedette'
 import { Route as CheckoutListingIdRouteImport } from './routes/checkout.$listingId'
 import { Route as ListingsListingIdRouteImport } from './routes/listings.$listingId'
 
@@ -28,6 +33,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -45,9 +55,24 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RefundPolicyRoute = RefundPolicyRouteImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReturnPolicyRoute = ReturnPolicyRouteImport.update({
+  id: '/return-policy',
+  path: '/return-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SellCarRoute = SellCarRouteImport.update({
   id: '/sell-car',
   path: '/sell-car',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SoldCarsRoute = SoldCarsRouteImport.update({
@@ -58,6 +83,11 @@ const SoldCarsRoute = SoldCarsRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VedetteRoute = VedetteRouteImport.update({
+  id: '/vedette',
+  path: '/vedette',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutListingIdRoute = CheckoutListingIdRouteImport.update({
@@ -74,24 +104,34 @@ const ListingsListingIdRoute = ListingsListingIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/favorites': typeof FavoritesRoute
   '/privacy': typeof PrivacyRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/return-policy': typeof ReturnPolicyRoute
   '/sell-car': typeof SellCarRoute
+  '/shop': typeof ShopRoute
   '/sold-cars': typeof SoldCarsRoute
   '/terms': typeof TermsRoute
+  '/vedette': typeof VedetteRoute
   '/checkout/$listingId': typeof CheckoutListingIdRoute
   '/listings/$listingId': typeof ListingsListingIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/favorites': typeof FavoritesRoute
   '/privacy': typeof PrivacyRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/return-policy': typeof ReturnPolicyRoute
   '/sell-car': typeof SellCarRoute
+  '/shop': typeof ShopRoute
   '/sold-cars': typeof SoldCarsRoute
   '/terms': typeof TermsRoute
+  '/vedette': typeof VedetteRoute
   '/checkout/$listingId': typeof CheckoutListingIdRoute
   '/listings/$listingId': typeof ListingsListingIdRoute
 }
@@ -99,12 +139,17 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/favorites': typeof FavoritesRoute
   '/privacy': typeof PrivacyRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/return-policy': typeof ReturnPolicyRoute
   '/sell-car': typeof SellCarRoute
+  '/shop': typeof ShopRoute
   '/sold-cars': typeof SoldCarsRoute
   '/terms': typeof TermsRoute
+  '/vedette': typeof VedetteRoute
   '/checkout/$listingId': typeof CheckoutListingIdRoute
   '/listings/$listingId': typeof ListingsListingIdRoute
 }
@@ -113,36 +158,51 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/contact'
     | '/faq'
     | '/favorites'
     | '/privacy'
+    | '/refund-policy'
+    | '/return-policy'
     | '/sell-car'
+    | '/shop'
     | '/sold-cars'
     | '/terms'
+    | '/vedette'
     | '/checkout/$listingId'
     | '/listings/$listingId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/contact'
     | '/faq'
     | '/favorites'
     | '/privacy'
+    | '/refund-policy'
+    | '/return-policy'
     | '/sell-car'
+    | '/shop'
     | '/sold-cars'
     | '/terms'
+    | '/vedette'
     | '/checkout/$listingId'
     | '/listings/$listingId'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/contact'
     | '/faq'
     | '/favorites'
     | '/privacy'
+    | '/refund-policy'
+    | '/return-policy'
     | '/sell-car'
+    | '/shop'
     | '/sold-cars'
     | '/terms'
+    | '/vedette'
     | '/checkout/$listingId'
     | '/listings/$listingId'
   fileRoutesById: FileRoutesById
@@ -150,12 +210,17 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   FavoritesRoute: typeof FavoritesRoute
   PrivacyRoute: typeof PrivacyRoute
+  RefundPolicyRoute: typeof RefundPolicyRoute
+  ReturnPolicyRoute: typeof ReturnPolicyRoute
   SellCarRoute: typeof SellCarRoute
+  ShopRoute: typeof ShopRoute
   SoldCarsRoute: typeof SoldCarsRoute
   TermsRoute: typeof TermsRoute
+  VedetteRoute: typeof VedetteRoute
   CheckoutListingIdRoute: typeof CheckoutListingIdRoute
   ListingsListingIdRoute: typeof ListingsListingIdRoute
 }
@@ -174,6 +239,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -197,11 +269,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/refund-policy': {
+      id: '/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/refund-policy'
+      preLoaderRoute: typeof RefundPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/return-policy': {
+      id: '/return-policy'
+      path: '/return-policy'
+      fullPath: '/return-policy'
+      preLoaderRoute: typeof ReturnPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sell-car': {
       id: '/sell-car'
       path: '/sell-car'
       fullPath: '/sell-car'
       preLoaderRoute: typeof SellCarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sold-cars': {
@@ -216,6 +309,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vedette': {
+      id: '/vedette'
+      path: '/vedette'
+      fullPath: '/vedette'
+      preLoaderRoute: typeof VedetteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout/$listingId': {
@@ -238,12 +338,17 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   FavoritesRoute: FavoritesRoute,
   PrivacyRoute: PrivacyRoute,
+  RefundPolicyRoute: RefundPolicyRoute,
+  ReturnPolicyRoute: ReturnPolicyRoute,
   SellCarRoute: SellCarRoute,
+  ShopRoute: ShopRoute,
   SoldCarsRoute: SoldCarsRoute,
   TermsRoute: TermsRoute,
+  VedetteRoute: VedetteRoute,
   CheckoutListingIdRoute: CheckoutListingIdRoute,
   ListingsListingIdRoute: ListingsListingIdRoute,
 }

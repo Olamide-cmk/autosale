@@ -8,10 +8,11 @@ export type Locale = "fr" | "en";
 export const translations = {
   fr: {
     // --- header / nav ---
-    "nav.buy": "Acheter",
-    "nav.sold": "Vendus",
-    "nav.sell": "Vendre",
-    "nav.favorites": "Favoris",
+    "nav.home": "Accueil",
+    "nav.about": "À propos",
+    "nav.shop": "Shop",
+    "nav.featured": "Vedette",
+    "nav.contact": "Contact",
     "nav.sellYourCar": "Vendre ma voiture",
     "search.placeholder": "Rechercher (marque, modèle...)",
     "theme.toLight": "Passer en mode clair",
@@ -88,7 +89,7 @@ export const translations = {
 
     // --- listing card ---
     "listingCard.viewListing": "Voir l'annonce →",
-    "listingCard.featured": "Coup de cœur",
+    "listingCard.featured": "Vedette",
     "listingCard.addFav": "Ajouter aux favoris",
     "listingCard.removeFav": "Retirer des favoris",
     "listingCard.available": "Disponible",
@@ -173,6 +174,113 @@ export const translations = {
     "sellCar.photoWord": "photo(s)",
     "sellCar.fuelExample": "Essence",
     "sellCar.submitError": "Une erreur est survenue lors de la publication. Merci de réessayer.",
+
+    // --- contact page (general, not tied to a listing) ---
+    "contactPage.title": "Contactez-nous",
+    "contactPage.subtitle": "Une question ? Écrivez-nous, nous vous répondrons rapidement.",
+    "contactPage.name": "Nom",
+    "contactPage.email": "Email",
+    "contactPage.message": "Message",
+    "contactPage.send": "Envoyer",
+    "contactPage.sending": "Envoi…",
+    "contactPage.sentTitle": "Message envoyé",
+    "contactPage.sentBody": "Merci de nous avoir contactés, nous vous répondrons dès que possible.",
+    "contactPage.error": "Une erreur est survenue, merci de réessayer.",
+
+    // --- home page v2 (hero video, trust, carousel, testimonials) ---
+    "home.heroTitle": "Trouvez la voiture de vos rêves",
+    "home.heroSubtitle": "Des voitures d'exception, vérifiées et vendues à prix fixe — partout en Europe et en Afrique.",
+    "home.ctaShop": "Prendre ma voiture",
+    "home.ctaContact": "Contactez-nous",
+    "home.trust1.title": "Paiement sécurisé",
+    "home.trust1.text": "Paiement par carte ou mobile money, traité en toute confidentialité.",
+    "home.trust2.title": "Voitures vérifiées",
+    "home.trust2.text": "Chaque annonce est vérifiée et documentée avant publication.",
+    "home.trust3.title": "Livraison suivie",
+    "home.trust3.text": "Expédition suivie de bout en bout, en Europe comme en Afrique.",
+    "home.carouselIntro": "Un aperçu de ce qui vous attend",
+    "home.testimonialsIntro": "Ce que nos clients en disent",
+    "home.testimonialsTitle": "Témoignages",
+    "home.testimonial1.name": "Karim B.",
+    "home.testimonial1.text": "Achat simple et rapide, la voiture correspondait exactement à l'annonce. Livraison suivie du début à la fin.",
+    "home.testimonial2.name": "Aïcha D.",
+    "home.testimonial2.text": "Très bon contact avec le vendeur, aucune mauvaise surprise à la réception du véhicule.",
+    "home.testimonial3.name": "Julien M.",
+    "home.testimonial3.text": "Le paiement sécurisé m'a rassuré, et le délai de livraison annoncé a été respecté.",
+    "home.testimonial4.name": "Fatou S.",
+    "home.testimonial4.text": "Annonce très détaillée, exactement ce que je cherchais. Je recommande sans hésiter.",
+
+    // --- about page images ---
+    "about.trustImageAlt": "Remise des clés au client",
+    "about.carImageAlt": "Voiture illustrant notre activité",
+
+    // --- shop sidebar categories ---
+    "shop.categoriesTitle": "Catégories",
+    "shop.allCategories": "Toutes catégories",
+    "shop.featuredTag": "Vedette",
+
+    // --- checkout v2 (3-step form) ---
+    "checkout.step1Title": "Informations de contact",
+    "checkout.firstName": "Prénom",
+    "checkout.lastName": "Nom",
+    "checkout.phoneLabel": "Numéro de téléphone",
+    "checkout.sameNumberQuestion": "Est-ce le même numéro que vous utilisez pour être appelé ?",
+    "checkout.yes": "Oui",
+    "checkout.no": "Non",
+    "checkout.callNumber": "Numéro à utiliser pour vous appeler",
+    "checkout.country": "Pays",
+    "checkout.selectCountry": "Sélectionner un pays",
+    "checkout.step2Title": "Livraison",
+    "checkout.address": "Adresse",
+    "checkout.city": "Ville",
+    "checkout.postalCode": "Code postal",
+    "checkout.region": "Région / État",
+    "checkout.addressComplement": "Complément d'adresse (optionnel)",
+    "checkout.step3Title": "Paiement",
+    "checkout.paymentMethod": "Moyen de paiement",
+    "checkout.methodCard": "Carte bancaire",
+    "checkout.methodMobileMoney": "Mobile money",
+    "checkout.mobileNumber": "Numéro mobile money",
+    "checkout.mobileProvider": "Opérateur",
+    "checkout.deliveryLocalTitle": "Livraison estimée : 3 jours à 1 semaine",
+    "checkout.deliveryIntlTitle": "Livraison estimée : délai plus long, votre pays étant hors zone locale",
+    "checkout.next": "Suivant",
+    "checkout.back": "Précédent",
+    "checkout.confirmOrder": "Confirmer la commande",
+
+    // --- footer legal links ---
+    "footer.refundPolicy": "Politique de remboursement",
+    "footer.returnPolicy": "Politique de retour",
+    "footer.cookieSettings": "Paramètres des cookies",
+
+    // --- cookie consent banner ---
+    "cookies.message":
+      "Nous utilisons des cookies techniques pour améliorer votre expérience sur AutoSale. Aucun cookie publicitaire n'est utilisé.",
+    "cookies.accept": "Accepter",
+    "cookies.decline": "Refuser",
+    "cookies.learnMore": "En savoir plus",
+
+    // --- refund policy page ---
+    "refund.title": "Politique de remboursement",
+    "refund.lastUpdated": "Dernière mise à jour : 30 août 2026 — document de démonstration, sans valeur juridique.",
+    "refund.s1title": "1. Conditions de remboursement",
+    "refund.s1body":
+      "Un remboursement peut être demandé si le véhicule livré ne correspond pas à la description de l'annonce, ou en cas d'annulation avant expédition.",
+    "refund.s2title": "2. Délai de demande",
+    "refund.s2body": "Toute demande de remboursement doit être adressée dans les 48 heures suivant la réception du véhicule.",
+    "refund.s3title": "3. Modalités",
+    "refund.s3body": "Le remboursement est effectué sur le même moyen de paiement utilisé lors de l'achat, sous 5 à 10 jours ouvrés après validation.",
+
+    // --- return policy page ---
+    "returnPolicy.title": "Politique de retour après expédition",
+    "returnPolicy.lastUpdated": "Dernière mise à jour : 30 août 2026 — document de démonstration, sans valeur juridique.",
+    "returnPolicy.s1title": "1. Éligibilité au retour",
+    "returnPolicy.s1body":
+      "Un retour peut être initié dans les 48 heures suivant la livraison si le véhicule présente une non-conformité majeure avec l'annonce.",
+    "returnPolicy.s2title": "2. Frais de retour",
+    "returnPolicy.s2body": "Les frais de retour sont à la charge du vendeur si la non-conformité est avérée, sinon à la charge de l'acheteur.",
+    "returnPolicy.s3title": "3. État du véhicule",
+    "returnPolicy.s3body": "Le véhicule doit être retourné dans l'état où il a été reçu, sans dommage supplémentaire.",
 
     // --- sold-cars page ---
     "soldCars.title": "Voitures vendues",
@@ -316,10 +424,11 @@ export const translations = {
   },
   en: {
     // --- header / nav ---
-    "nav.buy": "Buy",
-    "nav.sold": "Sold",
-    "nav.sell": "Sell",
-    "nav.favorites": "Favorites",
+    "nav.home": "Home",
+    "nav.about": "About",
+    "nav.shop": "Shop",
+    "nav.featured": "Featured",
+    "nav.contact": "Contact",
     "nav.sellYourCar": "Sell your car",
     "search.placeholder": "Search (make, model...)",
     "theme.toLight": "Switch to light mode",
@@ -481,6 +590,112 @@ export const translations = {
     "sellCar.photoWord": "photo(s)",
     "sellCar.fuelExample": "Gasoline",
     "sellCar.submitError": "Something went wrong while publishing. Please try again.",
+
+    // --- contact page (general, not tied to a listing) ---
+    "contactPage.title": "Contact us",
+    "contactPage.subtitle": "Got a question? Send us a message and we'll get back to you quickly.",
+    "contactPage.name": "Name",
+    "contactPage.email": "Email",
+    "contactPage.message": "Message",
+    "contactPage.send": "Send",
+    "contactPage.sending": "Sending…",
+    "contactPage.sentTitle": "Message sent",
+    "contactPage.sentBody": "Thanks for reaching out, we'll get back to you as soon as possible.",
+    "contactPage.error": "Something went wrong, please try again.",
+
+    // --- home page v2 (hero video, trust, carousel, testimonials) ---
+    "home.heroTitle": "Find the car of your dreams",
+    "home.heroSubtitle": "Exceptional cars, verified and sold at a fixed price — across Europe and Africa.",
+    "home.ctaShop": "Get my car",
+    "home.ctaContact": "Contact us",
+    "home.trust1.title": "Secure payment",
+    "home.trust1.text": "Pay by card or mobile money, processed with full confidentiality.",
+    "home.trust2.title": "Verified cars",
+    "home.trust2.text": "Every listing is verified and documented before publishing.",
+    "home.trust3.title": "Tracked delivery",
+    "home.trust3.text": "End-to-end tracked shipping, across Europe and Africa.",
+    "home.carouselIntro": "A glimpse of what awaits you",
+    "home.testimonialsIntro": "What our customers say",
+    "home.testimonialsTitle": "Testimonials",
+    "home.testimonial1.name": "Karim B.",
+    "home.testimonial1.text": "Simple, fast purchase — the car matched the listing exactly. Tracked delivery from start to finish.",
+    "home.testimonial2.name": "Aïcha D.",
+    "home.testimonial2.text": "Great contact with the seller, no bad surprises when the car arrived.",
+    "home.testimonial3.name": "Julien M.",
+    "home.testimonial3.text": "The secure payment reassured me, and the announced delivery time was respected.",
+    "home.testimonial4.name": "Fatou S.",
+    "home.testimonial4.text": "Very detailed listing, exactly what I was looking for. I recommend without hesitation.",
+
+    // --- about page images ---
+    "about.trustImageAlt": "Handing over the keys to the customer",
+    "about.carImageAlt": "Car illustrating our business",
+
+    // --- shop sidebar categories ---
+    "shop.categoriesTitle": "Categories",
+    "shop.allCategories": "All categories",
+    "shop.featuredTag": "Featured",
+
+    // --- checkout v2 (3-step form) ---
+    "checkout.step1Title": "Contact information",
+    "checkout.firstName": "First name",
+    "checkout.lastName": "Last name",
+    "checkout.phoneLabel": "Phone number",
+    "checkout.sameNumberQuestion": "Is this the same number you use to be called?",
+    "checkout.yes": "Yes",
+    "checkout.no": "No",
+    "checkout.callNumber": "Number to use to call you",
+    "checkout.country": "Country",
+    "checkout.selectCountry": "Select a country",
+    "checkout.step2Title": "Shipping",
+    "checkout.address": "Address",
+    "checkout.city": "City",
+    "checkout.postalCode": "Postal code",
+    "checkout.region": "Region / State",
+    "checkout.addressComplement": "Address line 2 (optional)",
+    "checkout.step3Title": "Payment",
+    "checkout.paymentMethod": "Payment method",
+    "checkout.methodCard": "Card",
+    "checkout.methodMobileMoney": "Mobile money",
+    "checkout.mobileNumber": "Mobile money number",
+    "checkout.mobileProvider": "Provider",
+    "checkout.deliveryLocalTitle": "Estimated delivery: 3 days to 1 week",
+    "checkout.deliveryIntlTitle": "Estimated delivery: longer, as your country is outside the local zone",
+    "checkout.next": "Next",
+    "checkout.back": "Back",
+    "checkout.confirmOrder": "Confirm order",
+
+    // --- footer legal links ---
+    "footer.refundPolicy": "Refund policy",
+    "footer.returnPolicy": "Return policy",
+    "footer.cookieSettings": "Cookie settings",
+
+    // --- cookie consent banner ---
+    "cookies.message": "We use technical cookies to improve your experience on AutoSale. No advertising cookies are used.",
+    "cookies.accept": "Accept",
+    "cookies.decline": "Decline",
+    "cookies.learnMore": "Learn more",
+
+    // --- refund policy page ---
+    "refund.title": "Refund policy",
+    "refund.lastUpdated": "Last updated: August 30, 2026 — demo document, no legal value.",
+    "refund.s1title": "1. Refund conditions",
+    "refund.s1body":
+      "A refund can be requested if the delivered vehicle does not match the listing description, or in case of cancellation before shipping.",
+    "refund.s2title": "2. Request window",
+    "refund.s2body": "Any refund request must be submitted within 48 hours of receiving the vehicle.",
+    "refund.s3title": "3. How it works",
+    "refund.s3body": "The refund is issued to the payment method used for the purchase, within 5 to 10 business days after approval.",
+
+    // --- return policy page ---
+    "returnPolicy.title": "Return policy after shipping",
+    "returnPolicy.lastUpdated": "Last updated: August 30, 2026 — demo document, no legal value.",
+    "returnPolicy.s1title": "1. Return eligibility",
+    "returnPolicy.s1body":
+      "A return can be initiated within 48 hours of delivery if the vehicle shows a major discrepancy with the listing.",
+    "returnPolicy.s2title": "2. Return costs",
+    "returnPolicy.s2body": "Return costs are covered by the seller if the discrepancy is confirmed, otherwise by the buyer.",
+    "returnPolicy.s3title": "3. Vehicle condition",
+    "returnPolicy.s3body": "The vehicle must be returned in the condition it was received, with no additional damage.",
 
     // --- sold-cars page ---
     "soldCars.title": "Sold cars",

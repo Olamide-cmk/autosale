@@ -1,6 +1,17 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { MapPin, Heart, CheckCircle2, AlertTriangle, Gauge, Fuel, Cog, CreditCard } from "lucide-react";
+import {
+  MapPin,
+  Heart,
+  CheckCircle2,
+  AlertTriangle,
+  Gauge,
+  Fuel,
+  Cog,
+  CreditCard,
+  Zap,
+  Car,
+} from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ListingCard } from "@/components/ListingCard";
@@ -9,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatUsd, listings as seedListings, fromSubmittedListing, type CarListing } from "@/data/listings";
 import { useFavorites } from "@/context/favorites-context";
 import { useLocale } from "@/i18n/locale-context";
+import { colorSwatch } from "@/lib/color-swatch";
 import { getSubmittedListingByIdFn, getPurchasedListingIdsFn } from "@/server-fns";
 
 export const Route = createFileRoute("/listings/$listingId")({
@@ -141,7 +153,7 @@ function ListingDetail() {
               />
             </div>
             {listing.images.length > 1 && (
-              <div className="mt-3 grid grid-cols-4 gap-3">
+              <div className="mt-3 flex gap-2">
                 {listing.images.map((image, i) => (
                   <button
                     key={image}
@@ -149,15 +161,63 @@ function ListingDetail() {
                     onClick={() => setActiveImage(i)}
                     aria-label={`${t("listing.viewPhoto")} ${i + 1}`}
                     aria-current={i === activeImage}
-                    className={`aspect-[3/2] overflow-hidden rounded-lg border-2 transition-colors ${
-                      i === activeImage ? "border-accent" : "border-transparent hover:border-border"
+                    className={`size-2.5 rounded-full transition-colors ${
+                      i === activeImage ? "bg-accent" : "bg-border hover:bg-muted-foreground"
                     }`}
-                  >
-                    <img src={image} alt="" width={300} height={200} className="h-full w-full object-cover" />
-                  </button>
+                  />
                 ))}
               </div>
             )}
+
+            {/* Characteristics — visual cards instead of a photo thumbnail strip */}
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <div className="rounded-lg border bg-card p-3 text-center">
+                <div className="mx-auto flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  {listing.fuelType.toLowerCase().includes("électr") ? (
+                    <Zap className="size-4" />
+                  ) : (
+                    <Fuel className="size-4" />
+                  )}
+                </div>
+                <p className="eyebrow mt-2">{t("listing.fuel")}</p>
+                <p className="mt-0.5 text-xs font-semibold">{listing.fuelType}</p>
+              </div>
+              <div className="rounded-lg border bg-card p-3 text-center">
+                <div className="mx-auto flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Car className="size-4" />
+                </div>
+                <p className="eyebrow mt-2">{t("listing.category")}</p>
+                <p className="mt-0.5 text-xs font-semibold">{listing.category ?? "—"}</p>
+              </div>
+              {listing.exteriorColor && (
+                <div className="rounded-lg border bg-card p-3 text-center">
+                  <div
+                    className="mx-auto flex size-9 items-center justify-center rounded-full border-2 border-background shadow"
+                    style={{ backgroundColor: colorSwatch(listing.exteriorColor) }}
+                  />
+                  <p className="eyebrow mt-2">{t("listing.extColor")}</p>
+                  <p className="mt-0.5 text-xs font-semibold">{listing.exteriorColor}</p>
+                </div>
+              )}
+              {listing.interiorColor ? (
+                <div className="rounded-lg border bg-card p-3 text-center">
+                  <div
+                    className="mx-auto flex size-9 items-center justify-center rounded-full border-2 border-background shadow"
+                    style={{ backgroundColor: colorSwatch(listing.interiorColor) }}
+                  />
+                  <p className="eyebrow mt-2">{t("listing.intColor")}</p>
+                  <p className="mt-0.5 text-xs font-semibold">{listing.interiorColor}</p>
+                </div>
+              ) : (
+                <div className="rounded-lg border bg-card p-3 text-center">
+                  <div className="mx-auto flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <Cog className="size-4" />
+                  </div>
+                  <p className="eyebrow mt-2">{t("listing.transmission")}</p>
+                  <p className="mt-0.5 text-xs font-semibold">{listing.transmission}</p>
+                </div>
+              )}
+            </div>
 
             {/* Description */}
             {listing.description.length > 0 && (

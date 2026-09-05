@@ -18,6 +18,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLocale } from "@/i18n/locale-context";
 import { Toaster } from "@/components/ui/sonner";
+import { CookieConsent } from "@/components/CookieConsent";
 
 // Runs before hydration to avoid a light/dark flash on load.
 const themeInitScript = `
@@ -159,6 +160,7 @@ function RootComponent() {
           </a>
           <Outlet />
           <Toaster position="bottom-right" richColors />
+          <CookieConsent />
         </FavoritesProvider>
       </LocaleProvider>
     </QueryClientProvider>
