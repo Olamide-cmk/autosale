@@ -1,7 +1,7 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
-import { CheckCircle2, ShieldAlert, Lock, Check } from "lucide-react";
+import { CheckCircle2, Lock, Check } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Input } from "@/components/ui/input";
@@ -242,13 +242,6 @@ function Checkout() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main id="main-content" className="container-page max-w-2xl py-12">
-        <div className="mb-6 flex items-center gap-2 rounded-lg border border-accent/40 bg-accent/10 px-4 py-3 text-sm text-foreground">
-          <ShieldAlert className="size-5 shrink-0 text-accent" />
-          <p>
-            <strong>{t("checkout.demoTitle")}</strong> {t("checkout.demoBody")}
-          </p>
-        </div>
-
         <h1 className="text-3xl font-bold">{t("checkout.title")}</h1>
         <p className="mt-1 text-muted-foreground">{listing.title}</p>
 
