@@ -122,13 +122,13 @@ function Home() {
                     className="group relative flex w-56 shrink-0 flex-col items-center"
                   >
                     <div className="podium-glow absolute bottom-2 h-10 w-44 rounded-full" />
-                    <div className="relative z-10 flex h-32 w-full items-center justify-center overflow-hidden">
+                    <div className="relative z-10 flex h-32 w-full items-center justify-center overflow-hidden rounded-xl">
                       <img
                         src={car.images[0]}
                         alt={car.title}
                         width={400}
                         height={240}
-                        className="h-full w-full object-cover drop-shadow-2xl transition-transform duration-500 group-hover:scale-105"
+                        className="h-full w-full rounded-xl object-cover drop-shadow-2xl transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
                     <span className="relative z-10 mt-3 text-center text-xs font-semibold text-muted-foreground">
