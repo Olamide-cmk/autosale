@@ -1,8 +1,6 @@
 import { Search } from "lucide-react";
 import { brands, type CarListing } from "@/data/listings";
 import { Input } from "@/components/ui/input";
-import { useLocale } from "@/i18n/locale-context";
-import type { TranslationKey } from "@/i18n/translations";
 import {
   Select,
   SelectContent,
@@ -29,35 +27,35 @@ export const defaultFilters: Filters = {
   sort: "newest",
 };
 
-const priceOptions: { value: string; key: TranslationKey }[] = [
-  { value: "all", key: "filters.allPrices" },
-  { value: "50000", key: "filters.priceUpTo50k" },
-  { value: "100000", key: "filters.priceUpTo100k" },
-  { value: "150000", key: "filters.priceUpTo150k" },
-  { value: "250000", key: "filters.priceUpTo250k" },
+const priceOptions = [
+  { value: "all", label: "Tous les prix" },
+  { value: "50000", label: "Jusqu'à $50 000" },
+  { value: "100000", label: "Jusqu'à $100 000" },
+  { value: "150000", label: "Jusqu'à $150 000" },
+  { value: "250000", label: "Jusqu'à $250 000" },
 ];
 
-const yearOptions: { value: string; key: TranslationKey }[] = [
-  { value: "all", key: "filters.allYears" },
-  { value: "2023", key: "filters.year2023" },
-  { value: "2020", key: "filters.year2020" },
-  { value: "2015", key: "filters.year2015" },
-  { value: "0", key: "filters.yearBefore2015" },
+const yearOptions = [
+  { value: "all", label: "Toutes années" },
+  { value: "2023", label: "2023 et plus récent" },
+  { value: "2020", label: "2020 et plus récent" },
+  { value: "2015", label: "2015 et plus récent" },
+  { value: "0", label: "Avant 2015 (classiques)" },
 ];
 
-const mileageOptions: { value: string; key: TranslationKey }[] = [
-  { value: "all", key: "filters.allMileages" },
-  { value: "10000", key: "filters.mileageUnder10k" },
-  { value: "25000", key: "filters.mileageUnder25k" },
-  { value: "50000", key: "filters.mileageUnder50k" },
+const mileageOptions = [
+  { value: "all", label: "Tous kilométrages" },
+  { value: "10000", label: "Moins de 10 000 km" },
+  { value: "25000", label: "Moins de 25 000 km" },
+  { value: "50000", label: "Moins de 50 000 km" },
 ];
 
-export const sortOptionKeys: { value: string; key: TranslationKey }[] = [
-  { value: "newest", key: "filters.sortNewest" },
-  { value: "price-asc", key: "filters.sortPriceAsc" },
-  { value: "price-desc", key: "filters.sortPriceDesc" },
-  { value: "mileage-asc", key: "filters.sortMileageAsc" },
-  { value: "year-desc", key: "filters.sortYearDesc" },
+export const sortOptions = [
+  { value: "newest", label: "Plus récentes" },
+  { value: "price-asc", label: "Prix croissant" },
+  { value: "price-desc", label: "Prix décroissant" },
+  { value: "mileage-asc", label: "Kilométrage croissant" },
+  { value: "year-desc", label: "Année (récent → ancien)" },
 ];
 
 function parseMileage(mileage: string): number {
@@ -72,7 +70,6 @@ export function ListingFilters({
   filters: Filters;
   onChange: (next: Filters) => void;
 }) {
-  const { t } = useLocale();
   const set = <K extends keyof Filters>(key: K, value: Filters[K]) =>
     onChange({ ...filters, [key]: value });
 
@@ -84,18 +81,18 @@ export function ListingFilters({
           <Input
             value={filters.q}
             onChange={(e) => set("q", e.target.value)}
-            placeholder={t("filters.searchPlaceholder")}
+            placeholder="Marque, modèle, mot-clé…"
             className="pl-9"
-            aria-label={t("filters.search")}
+            aria-label="Rechercher"
           />
         </div>
 
         <Select value={filters.brand} onValueChange={(v) => set("brand", v)}>
-          <SelectTrigger aria-label={t("filters.brand")}>
-            <SelectValue placeholder={t("filters.brand")} />
+          <SelectTrigger aria-label="Marque">
+            <SelectValue placeholder="Marque" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{t("filters.allBrands")}</SelectItem>
+            <SelectItem value="all">Toutes marques</SelectItem>
             {brands.map((m) => (
               <SelectItem key={m} value={m}>
                 {m}
@@ -105,52 +102,52 @@ export function ListingFilters({
         </Select>
 
         <Select value={filters.minYear} onValueChange={(v) => set("minYear", v)}>
-          <SelectTrigger aria-label={t("filters.year")}>
-            <SelectValue placeholder={t("filters.year")} />
+          <SelectTrigger aria-label="Année">
+            <SelectValue placeholder="Année" />
           </SelectTrigger>
           <SelectContent>
             {yearOptions.map((o) => (
               <SelectItem key={o.value} value={o.value}>
-                {t(o.key)}
+                {o.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
 
         <Select value={filters.maxPrice} onValueChange={(v) => set("maxPrice", v)}>
-          <SelectTrigger aria-label={t("filters.price")}>
-            <SelectValue placeholder={t("filters.price")} />
+          <SelectTrigger aria-label="Prix">
+            <SelectValue placeholder="Prix" />
           </SelectTrigger>
           <SelectContent>
             {priceOptions.map((o) => (
               <SelectItem key={o.value} value={o.value}>
-                {t(o.key)}
+                {o.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
 
         <Select value={filters.maxMileage} onValueChange={(v) => set("maxMileage", v)}>
-          <SelectTrigger aria-label={t("filters.mileage")}>
-            <SelectValue placeholder={t("filters.mileage")} />
+          <SelectTrigger aria-label="Kilométrage">
+            <SelectValue placeholder="Kilométrage" />
           </SelectTrigger>
           <SelectContent>
             {mileageOptions.map((o) => (
               <SelectItem key={o.value} value={o.value}>
-                {t(o.key)}
+                {o.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
 
         <Select value={filters.sort} onValueChange={(v) => set("sort", v)}>
-          <SelectTrigger aria-label={t("filters.sortBy")}>
-            <SelectValue placeholder={t("filters.sortBy")} />
+          <SelectTrigger aria-label="Trier par">
+            <SelectValue placeholder="Trier par" />
           </SelectTrigger>
           <SelectContent>
-            {sortOptionKeys.map((o) => (
+            {sortOptions.map((o) => (
               <SelectItem key={o.value} value={o.value}>
-                {t(o.key)}
+                {o.label}
               </SelectItem>
             ))}
           </SelectContent>

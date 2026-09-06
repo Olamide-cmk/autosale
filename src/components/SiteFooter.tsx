@@ -10,15 +10,6 @@ export function SiteFooter() {
   const [loading, setLoading] = useState(false);
   const { t } = useLocale();
 
-  function resetCookieConsent() {
-    try {
-      window.localStorage.removeItem("autosale:cookie-consent");
-      window.location.reload();
-    } catch {
-      // ignore
-    }
-  }
-
   async function handleNewsletterSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!/^\S+@\S+\.\S+$/.test(email)) {
@@ -54,7 +45,7 @@ export function SiteFooter() {
               <a
                 key={i}
                 href="#"
-                aria-label={t("footer.socialNetwork")}
+                aria-label="Réseau social"
                 className="flex size-9 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-accent hover:text-accent"
               >
                 <Icon className="size-4" />
@@ -66,8 +57,7 @@ export function SiteFooter() {
         <div>
           <h3 className="eyebrow text-white/50">{t("footer.listingsHeading")}</h3>
           <ul className="mt-3 space-y-2 text-sm text-white/70">
-            <li><Link to="/shop" className="hover:text-accent">{t("nav.shop")}</Link></li>
-            <li><Link to="/vedette" className="hover:text-accent">{t("nav.featured")}</Link></li>
+            <li><Link to="/" className="hover:text-accent">{t("footer.forSale")}</Link></li>
             <li><Link to="/sold-cars" className="hover:text-accent">{t("footer.sold")}</Link></li>
             <li><Link to="/sell-car" className="hover:text-accent">{t("footer.sellCar")}</Link></li>
           </ul>
@@ -77,17 +67,9 @@ export function SiteFooter() {
           <h3 className="eyebrow text-white/50">{t("footer.company")}</h3>
           <ul className="mt-3 space-y-2 text-sm text-white/70">
             <li><Link to="/about" className="hover:text-accent">{t("footer.about")}</Link></li>
-            <li><Link to="/contact" className="hover:text-accent">{t("nav.contact")}</Link></li>
             <li><Link to="/faq" className="hover:text-accent">{t("footer.faq")}</Link></li>
             <li><Link to="/terms" className="hover:text-accent">{t("footer.terms")}</Link></li>
             <li><Link to="/privacy" className="hover:text-accent">{t("footer.privacy")}</Link></li>
-            <li><Link to="/refund-policy" className="hover:text-accent">{t("footer.refundPolicy")}</Link></li>
-            <li><Link to="/return-policy" className="hover:text-accent">{t("footer.returnPolicy")}</Link></li>
-            <li>
-              <button type="button" onClick={resetCookieConsent} className="text-left hover:text-accent">
-                {t("footer.cookieSettings")}
-              </button>
-            </li>
           </ul>
         </div>
 
@@ -101,7 +83,7 @@ export function SiteFooter() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t("footer.emailPlaceholder")}
-              aria-label={t("footer.emailAria")}
+              aria-label="Adresse email"
               className="h-10 w-full min-w-0 rounded-md border border-white/15 bg-white/10 px-3 text-sm text-white placeholder:text-white/40 outline-none focus:ring-2 focus:ring-accent"
             />
             <button

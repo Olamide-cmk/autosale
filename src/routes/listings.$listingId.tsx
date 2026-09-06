@@ -1,17 +1,6 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import {
-  MapPin,
-  Heart,
-  CheckCircle2,
-  AlertTriangle,
-  Gauge,
-  Fuel,
-  Cog,
-  CreditCard,
-  Zap,
-  Car,
-} from "lucide-react";
+import { MapPin, Heart, CheckCircle2, AlertTriangle, Gauge, Fuel, Cog, CreditCard } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ListingCard } from "@/components/ListingCard";
@@ -19,8 +8,6 @@ import { ContactSellerForm } from "@/components/ContactSellerForm";
 import { Badge } from "@/components/ui/badge";
 import { formatUsd, listings as seedListings, fromSubmittedListing, type CarListing } from "@/data/listings";
 import { useFavorites } from "@/context/favorites-context";
-import { useLocale } from "@/i18n/locale-context";
-import { colorSwatch } from "@/lib/color-swatch";
 import { getSubmittedListingByIdFn, getPurchasedListingIdsFn } from "@/server-fns";
 
 export const Route = createFileRoute("/listings/$listingId")({
@@ -57,7 +44,6 @@ export const Route = createFileRoute("/listings/$listingId")({
 
 function ListingDetail() {
   const { listing } = Route.useLoaderData();
-  const { t } = useLocale();
   const [activeImage, setActiveImage] = useState(0);
   const [purchased, setPurchased] = useState(false);
   const { isFavorited, toggleFavorite } = useFavorites();
@@ -88,32 +74,20 @@ function ListingDetail() {
     if (e.key === "ArrowLeft") setActiveImage((i) => (i - 1 + listing.images.length) % listing.images.length);
   }
 
-  const specRows: [string, string][] = [
-    [t("listing.year"), String(listing.year)],
-    [t("listing.brandModel"), `${listing.brand} ${listing.model}`],
-    [t("listing.mileage"), listing.mileage],
-    [t("listing.fuel"), listing.fuelType],
-    [t("listing.transmission"), listing.transmission],
-    ...(listing.drivetrain ? ([[t("listing.drivetrain"), listing.drivetrain]] as [string, string][]) : []),
-    ...(listing.exteriorColor ? ([[t("listing.extColor"), listing.exteriorColor]] as [string, string][]) : []),
-    ...(listing.interiorColor ? ([[t("listing.intColor"), listing.interiorColor]] as [string, string][]) : []),
-    ...(listing.vin ? ([[t("listing.vin"), listing.vin]] as [string, string][]) : []),
-  ];
-
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main id="main-content" className="container-page py-8">
         <Link to="/" className="text-sm font-semibold text-primary hover:underline">
-          {t("listing.backToListings")}
+          ← Toutes les annonces
         </Link>
 
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
             {isSold ? (
-              <Badge className="bg-navy text-white">{t("listingCard.sold")}</Badge>
+              <Badge className="bg-navy text-white">Vendu</Badge>
             ) : (
-              <Badge className="bg-accent text-accent-foreground">{t("listingCard.available")}</Badge>
+              <Badge className="bg-accent text-accent-foreground">Disponible</Badge>
             )}
             {listing.category && <span className="eyebrow">{listing.category}</span>}
           </div>
@@ -125,7 +99,7 @@ function ListingDetail() {
             }`}
           >
             <Heart className={`size-4 ${favorited ? "fill-accent" : ""}`} />
-            {favorited ? t("listing.inFavorites") : t("listing.addToFavorites")}
+            {favorited ? "Dans mes favoris" : "Ajouter aux favoris"}
           </button>
         </div>
         <h1 className="mt-2 text-4xl font-bold leading-tight">{listing.title}</h1>
@@ -139,7 +113,7 @@ function ListingDetail() {
           <div>
             <div
               role="group"
-              aria-label={`${t("listing.galleryLabel")} ${activeImage + 1} ${t("listing.galleryOf")} ${listing.images.length}. ${t("listing.galleryHint")}`}
+              aria-label={`Galerie photo, image ${activeImage + 1} sur ${listing.images.length}. Utilisez les flèches gauche/droite pour naviguer.`}
               tabIndex={0}
               onKeyDown={galleryKeyDown}
               className="rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -153,76 +127,28 @@ function ListingDetail() {
               />
             </div>
             {listing.images.length > 1 && (
-              <div className="mt-3 flex gap-2">
+              <div className="mt-3 grid grid-cols-4 gap-3">
                 {listing.images.map((image, i) => (
                   <button
                     key={image}
                     type="button"
                     onClick={() => setActiveImage(i)}
-                    aria-label={`${t("listing.viewPhoto")} ${i + 1}`}
+                    aria-label={`Voir la photo ${i + 1}`}
                     aria-current={i === activeImage}
-                    className={`size-2.5 rounded-full transition-colors ${
-                      i === activeImage ? "bg-accent" : "bg-border hover:bg-muted-foreground"
+                    className={`aspect-[3/2] overflow-hidden rounded-lg border-2 transition-colors ${
+                      i === activeImage ? "border-accent" : "border-transparent hover:border-border"
                     }`}
-                  />
+                  >
+                    <img src={image} alt="" width={300} height={200} className="h-full w-full object-cover" />
+                  </button>
                 ))}
               </div>
             )}
 
-            {/* Characteristics — visual cards instead of a photo thumbnail strip */}
-            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <div className="rounded-lg border bg-card p-3 text-center">
-                <div className="mx-auto flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  {listing.fuelType.toLowerCase().includes("électr") ? (
-                    <Zap className="size-4" />
-                  ) : (
-                    <Fuel className="size-4" />
-                  )}
-                </div>
-                <p className="eyebrow mt-2">{t("listing.fuel")}</p>
-                <p className="mt-0.5 text-xs font-semibold">{listing.fuelType}</p>
-              </div>
-              <div className="rounded-lg border bg-card p-3 text-center">
-                <div className="mx-auto flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Car className="size-4" />
-                </div>
-                <p className="eyebrow mt-2">{t("listing.category")}</p>
-                <p className="mt-0.5 text-xs font-semibold">{listing.category ?? "—"}</p>
-              </div>
-              {listing.exteriorColor && (
-                <div className="rounded-lg border bg-card p-3 text-center">
-                  <div
-                    className="mx-auto flex size-9 items-center justify-center rounded-full border-2 border-background shadow"
-                    style={{ backgroundColor: colorSwatch(listing.exteriorColor) }}
-                  />
-                  <p className="eyebrow mt-2">{t("listing.extColor")}</p>
-                  <p className="mt-0.5 text-xs font-semibold">{listing.exteriorColor}</p>
-                </div>
-              )}
-              {listing.interiorColor ? (
-                <div className="rounded-lg border bg-card p-3 text-center">
-                  <div
-                    className="mx-auto flex size-9 items-center justify-center rounded-full border-2 border-background shadow"
-                    style={{ backgroundColor: colorSwatch(listing.interiorColor) }}
-                  />
-                  <p className="eyebrow mt-2">{t("listing.intColor")}</p>
-                  <p className="mt-0.5 text-xs font-semibold">{listing.interiorColor}</p>
-                </div>
-              ) : (
-                <div className="rounded-lg border bg-card p-3 text-center">
-                  <div className="mx-auto flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <Cog className="size-4" />
-                  </div>
-                  <p className="eyebrow mt-2">{t("listing.transmission")}</p>
-                  <p className="mt-0.5 text-xs font-semibold">{listing.transmission}</p>
-                </div>
-              )}
-            </div>
-
             {/* Description */}
             {listing.description.length > 0 && (
               <section className="mt-10 max-w-3xl">
-                <h2 className="text-2xl font-bold">{t("listing.about")}</h2>
+                <h2 className="text-2xl font-bold">À propos de cette voiture</h2>
                 <div className="mt-3 space-y-3 text-muted-foreground">
                   {listing.description.map((p, i) => (
                     <p key={i}>{p}</p>
@@ -237,7 +163,7 @@ function ListingDetail() {
                 {listing.highlights.length > 0 && (
                   <div>
                     <h3 className="flex items-center gap-2 text-lg font-semibold">
-                      <CheckCircle2 className="size-4 text-primary" /> {t("listing.highlights")}
+                      <CheckCircle2 className="size-4 text-primary" /> Points forts
                     </h3>
                     <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
                       {listing.highlights.map((h) => (
@@ -251,7 +177,7 @@ function ListingDetail() {
                 {listing.notes.length > 0 && (
                   <div>
                     <h3 className="flex items-center gap-2 text-lg font-semibold">
-                      <AlertTriangle className="size-4 text-accent" /> {t("listing.notes")}
+                      <AlertTriangle className="size-4 text-accent" /> À noter
                     </h3>
                     <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
                       {listing.notes.map((n) => (
@@ -267,9 +193,19 @@ function ListingDetail() {
 
             {/* Technical specs */}
             <section className="mt-10">
-              <h2 className="text-2xl font-bold">{t("listing.specs")}</h2>
+              <h2 className="text-2xl font-bold">Fiche technique</h2>
               <dl className="mt-4 grid grid-cols-1 gap-x-8 gap-y-3 rounded-xl border bg-card p-6 sm:grid-cols-2">
-                {specRows.map(([k, v]) => (
+                {[
+                  ["Année", String(listing.year)],
+                  ["Marque / Modèle", `${listing.brand} ${listing.model}`],
+                  ["Kilométrage", listing.mileage],
+                  ["Carburant", listing.fuelType],
+                  ["Transmission", listing.transmission],
+                  ...(listing.drivetrain ? [["Motricité", listing.drivetrain]] : []),
+                  ...(listing.exteriorColor ? [["Couleur extérieure", listing.exteriorColor]] : []),
+                  ...(listing.interiorColor ? [["Couleur intérieure", listing.interiorColor]] : []),
+                  ...(listing.vin ? [["VIN", listing.vin]] : []),
+                ].map(([k, v]) => (
                   <div key={k} className="flex justify-between gap-4 border-b pb-2 text-sm last:border-b-0">
                     <dt className="text-muted-foreground">{k}</dt>
                     <dd className="text-right font-semibold">{v}</dd>
@@ -280,7 +216,7 @@ function ListingDetail() {
 
             {/* Location */}
             <section className="mt-10">
-              <h2 className="text-2xl font-bold">{t("listing.location")}</h2>
+              <h2 className="text-2xl font-bold">Localisation</h2>
               <div className="mt-4 flex items-center gap-2 rounded-xl border bg-card p-6">
                 <MapPin className="size-5 text-primary" />
                 <span className="font-semibold">{listing.location}</span>
@@ -291,31 +227,31 @@ function ListingDetail() {
           {/* Sidebar: key facts + contact */}
           <aside className="h-fit space-y-6 lg:sticky lg:top-24">
             <div className="rounded-xl border bg-card p-6">
-              <span className="eyebrow block">{t("listing.askingPrice")}</span>
+              <span className="eyebrow block">Prix demandé</span>
               <span className="text-3xl font-bold">{formatUsd(listing.price)}</span>
               <dl className="mt-5 space-y-3 border-t pt-4 text-sm">
                 <div className="flex justify-between">
                   <dt className="flex items-center gap-1.5 text-muted-foreground">
-                    <Gauge className="size-3.5" /> {t("listing.mileage")}
+                    <Gauge className="size-3.5" /> Kilométrage
                   </dt>
                   <dd className="font-semibold">{listing.mileage}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="flex items-center gap-1.5 text-muted-foreground">
-                    <Fuel className="size-3.5" /> {t("listing.fuel")}
+                    <Fuel className="size-3.5" /> Carburant
                   </dt>
                   <dd className="font-semibold">{listing.fuelType}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="flex items-center gap-1.5 text-muted-foreground">
-                    <Cog className="size-3.5" /> {t("listing.transmission")}
+                    <Cog className="size-3.5" /> Transmission
                   </dt>
                   <dd className="font-semibold">{listing.transmission}</dd>
                 </div>
               </dl>
               {isSold && (
                 <p className="mt-5 rounded-md bg-muted px-4 py-3 text-sm text-muted-foreground">
-                  {t("listing.soldMessage")}
+                  Cette voiture a été vendue.
                 </p>
               )}
               {!isSold && (
@@ -324,7 +260,7 @@ function ListingDetail() {
                   params={{ listingId: listing.id }}
                   className="mt-5 flex w-full items-center justify-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-semibold uppercase tracking-wide text-accent-foreground hover:opacity-90"
                 >
-                  <CreditCard className="size-4" /> {t("listing.buyNow")}
+                  <CreditCard className="size-4" /> Acheter maintenant
                 </Link>
               )}
             </div>
@@ -336,7 +272,7 @@ function ListingDetail() {
         {/* Related listings */}
         {relatedListings.length > 0 && (
           <section className="mt-16">
-            <h2 className="text-2xl font-bold">{t("listing.alsoSee")}</h2>
+            <h2 className="text-2xl font-bold">À voir aussi</h2>
             <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {relatedListings.map((l) => (
                 <ListingCard key={l.id} listing={l} />

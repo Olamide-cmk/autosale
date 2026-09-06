@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { Phone, Send, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { maskPhone, type CarListing } from "@/data/listings";
 import { submitContactFn } from "@/server-fns";
-import { useLocale } from "@/i18n/locale-context";
 
 const contactSchema = z.object({
   name: z.string().min(1, "Merci d'indiquer votre nom."),
@@ -15,25 +14,16 @@ const contactSchema = z.object({
 });
 
 export function ContactSellerForm({ listing }: { listing: CarListing }) {
-  const { t } = useLocale();
   const [phoneRevealed, setPhoneRevealed] = useState(false);
-  const defaultMessage = `${t("contact.defaultMessagePrefix")} ${listing.year} ${listing.brand} ${listing.model}. ${t("contact.defaultMessageSuffix")}`;
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
-    message: defaultMessage,
+    message: `Bonjour, je suis intéressé(e) par votre ${listing.year} ${listing.brand} ${listing.model}. Est-elle toujours disponible ?`,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
-
-  // Keep the default message text in sync if the locale changes before the
-  // user has typed their own message.
-  useEffect(() => {
-    setForm((f) => (f.message === "" || f.message === defaultMessage ? { ...f, message: defaultMessage } : f));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t]);
 
   function update<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -65,7 +55,7 @@ export function ContactSellerForm({ listing }: { listing: CarListing }) {
       });
       setSent(true);
     } catch {
-      toast.error(t("contact.errorGeneric"));
+      toast.error("Une erreur est survenue, merci de réessayer.");
     } finally {
       setSending(false);
     }
@@ -75,9 +65,9 @@ export function ContactSellerForm({ listing }: { listing: CarListing }) {
     return (
       <div className="flex flex-col items-center rounded-xl border bg-card p-6 text-center">
         <CheckCircle2 className="size-8 text-primary" />
-        <p className="mt-3 font-semibold">{t("contact.sentTitle")}</p>
+        <p className="mt-3 font-semibold">Message envoyé au vendeur</p>
         <p className="mt-1 text-sm text-muted-foreground">
-          {listing.sellerName} {t("contact.sentBodySuffix")}
+          {listing.sellerName} recevra votre demande et pourra vous répondre directement par email.
         </p>
       </div>
     );
@@ -85,7 +75,7 @@ export function ContactSellerForm({ listing }: { listing: CarListing }) {
 
   return (
     <div className="rounded-xl border bg-card p-6">
-      <span className="eyebrow">{t("contact.title")}</span>
+      <span className="eyebrow">Contacter le vendeur</span>
       <div className="mt-3 flex items-center gap-3">
         <div className="flex size-11 items-center justify-center rounded-full bg-navy text-sm font-bold text-white">
           {listing.sellerName.slice(0, 2).toUpperCase()}
@@ -103,17 +93,17 @@ export function ContactSellerForm({ listing }: { listing: CarListing }) {
       >
         <Phone className="size-4" />
         {phoneRevealed ? listing.sellerPhone : maskPhone(listing.sellerPhone)}
-        {!phoneRevealed && <span className="text-xs text-muted-foreground">{t("contact.clickToReveal")}</span>}
+        {!phoneRevealed && <span className="text-xs text-muted-foreground">(cliquer pour afficher)</span>}
       </button>
 
       <form onSubmit={handleSubmit} className="mt-4 space-y-3">
         <div>
-          <label className="eyebrow block">{t("contact.yourName")}</label>
+          <label className="eyebrow block">Votre nom</label>
           <Input className="mt-1" value={form.name} onChange={(e) => update("name", e.target.value)} />
           {errors["name"] && <p className="mt-1 text-xs font-medium text-destructive">{errors["name"]}</p>}
         </div>
         <div>
-          <label className="eyebrow block">{t("contact.yourEmail")}</label>
+          <label className="eyebrow block">Votre email</label>
           <Input
             className="mt-1"
             type="email"
@@ -123,11 +113,11 @@ export function ContactSellerForm({ listing }: { listing: CarListing }) {
           {errors["email"] && <p className="mt-1 text-xs font-medium text-destructive">{errors["email"]}</p>}
         </div>
         <div>
-          <label className="eyebrow block">{t("contact.yourPhone")}</label>
+          <label className="eyebrow block">Votre téléphone (optionnel)</label>
           <Input className="mt-1" type="tel" value={form.phone} onChange={(e) => update("phone", e.target.value)} />
         </div>
         <div>
-          <label className="eyebrow block">{t("contact.message")}</label>
+          <label className="eyebrow block">Message</label>
           <textarea
             value={form.message}
             onChange={(e) => update("message", e.target.value)}
@@ -140,7 +130,7 @@ export function ContactSellerForm({ listing }: { listing: CarListing }) {
           disabled={sending}
           className="flex w-full items-center justify-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold uppercase tracking-wide text-primary-foreground hover:opacity-90 disabled:opacity-60"
         >
-          <Send className="size-4" /> {sending ? t("contact.sending") : t("contact.send")}
+          <Send className="size-4" /> {sending ? "Envoi…" : "Envoyer le message"}
         </button>
       </form>
     </div>

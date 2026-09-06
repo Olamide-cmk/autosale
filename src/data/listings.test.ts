@@ -14,11 +14,11 @@ describe("maskPhone", () => {
 });
 
 describe("dataset integrity", () => {
-  it("every listing has a unique id and at least 1 image", () => {
+  it("every listing has a unique id and at least 3 images", () => {
     const ids = new Set(listings.map((l) => l.id));
     expect(ids.size).toBe(listings.length);
     for (const listing of listings) {
-      expect(listing.images.length).toBeGreaterThanOrEqual(1);
+      expect(listing.images.length).toBeGreaterThanOrEqual(3);
     }
   });
 

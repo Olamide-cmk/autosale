@@ -69,7 +69,6 @@ type DbShape = {
   contactMessages: StoredContactMessage[];
   purchases: StoredPurchase[];
   newsletter: string[];
-  heartCounts: Record<string, number>;
 };
 
 const DB_PATH = join(process.cwd(), ".data", "autosale-store.json");
@@ -80,7 +79,6 @@ function emptyDb(): DbShape {
     contactMessages: [],
     purchases: [],
     newsletter: [],
-    heartCounts: {},
   };
 }
 
@@ -199,28 +197,6 @@ export function getPurchasedListingIds(): string[] {
 
 export function getPurchaseForListing(listingId: string): StoredPurchase | undefined {
   return db.purchases.find((p) => p.listingId === listingId);
-}
-
-// --- hearts / auto-vedette ---------------------------------------------------
-//
-// Per the spec: a listing is featured either because we manually flagged it
-// (CarListing.featured in the seed data / StoredListing), or automatically
-// once it collects 3 favorite "hearts" from visitors. There are no accounts,
-// so hearts are tracked globally per listing (not per user) — the client
-// guards against a single browser inflating the count by only contributing
-// once per listing (see favorites-context.tsx).
-
-export function incrementHeartCount(listingId: string): number {
-  const next = (db.heartCounts[listingId] ?? 0) + 1;
-  db.heartCounts[listingId] = next;
-  persist();
-  return next;
-}
-
-export function getAutoFeaturedListingIds(threshold = 3): string[] {
-  return Object.entries(db.heartCounts)
-    .filter(([, count]) => count >= threshold)
-    .map(([id]) => id);
 }
 
 // --- newsletter --------------------------------------------------------------

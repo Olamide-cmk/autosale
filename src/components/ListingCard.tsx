@@ -2,12 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { Heart, Gauge, Fuel, MapPin } from "lucide-react";
 import { formatUsd, type CarListing } from "@/data/listings";
 import { useFavorites } from "@/context/favorites-context";
-import { useLocale } from "@/i18n/locale-context";
 import { Badge } from "@/components/ui/badge";
 
 export function ListingCard({ listing, priority }: { listing: CarListing; priority?: boolean }) {
   const { isFavorited, toggleFavorite } = useFavorites();
-  const { t } = useLocale();
   const favorited = isFavorited(listing.id);
   const isSold = listing.status === "sold";
 
@@ -35,7 +33,7 @@ export function ListingCard({ listing, priority }: { listing: CarListing; priori
             e.stopPropagation();
             toggleFavorite(listing.id);
           }}
-          aria-label={favorited ? t("listingCard.removeFav") : t("listingCard.addFav")}
+          aria-label={favorited ? "Retirer des favoris" : "Ajouter aux favoris"}
           aria-pressed={favorited}
           className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60"
         >
@@ -43,11 +41,11 @@ export function ListingCard({ listing, priority }: { listing: CarListing; priori
         </button>
         <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
           {isSold ? (
-            <Badge className="bg-navy text-white">{t("listingCard.sold")}</Badge>
+            <Badge className="bg-navy text-white">Vendu</Badge>
           ) : (
-            <Badge className="bg-accent text-accent-foreground">{t("listingCard.available")}</Badge>
+            <Badge className="bg-accent text-accent-foreground">Disponible</Badge>
           )}
-          {listing.featured && !isSold && <Badge variant="secondary">{t("listingCard.featured")}</Badge>}
+          {listing.featured && !isSold && <Badge variant="secondary">Coup de cœur</Badge>}
         </div>
       </div>
       <div className="p-4">
@@ -68,7 +66,7 @@ export function ListingCard({ listing, priority }: { listing: CarListing; priori
 
         <div className="mt-4 flex items-center justify-between border-t pt-3">
           <span className="text-xl font-bold text-foreground">{formatUsd(listing.price)}</span>
-          <span className="text-sm font-semibold text-primary">{t("listingCard.viewListing")}</span>
+          <span className="text-sm font-semibold text-primary">Voir l'annonce →</span>
         </div>
       </div>
     </Link>

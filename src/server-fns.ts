@@ -8,8 +8,6 @@ import {
   recordPurchase,
   getPurchasedListingIds,
   getPurchaseForListing,
-  incrementHeartCount,
-  getAutoFeaturedListingIds,
 } from "./backend/store";
 
 // --- listings (seller submissions become real, live listings) --------------
@@ -107,17 +105,4 @@ export const purchaseListingFn = createServerFn({ method: "POST" })
 
 export const getPurchasedListingIdsFn = createServerFn({ method: "GET" }).handler(async () => {
   return getPurchasedListingIds();
-});
-
-// --- hearts / auto-vedette ---------------------------------------------------
-
-export const incrementHeartFn = createServerFn({ method: "POST" })
-  .validator(z.object({ listingId: z.string() }))
-  .handler(async ({ data }) => {
-    const count = incrementHeartCount(data.listingId);
-    return { count };
-  });
-
-export const getAutoFeaturedListingIdsFn = createServerFn({ method: "GET" }).handler(async () => {
-  return getAutoFeaturedListingIds();
 });
