@@ -1,30 +1,13 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo } from "react";
-import { z } from "zod";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ShieldCheck, BadgeCheck, Truck, Star } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { ListingCard } from "@/components/ListingCard";
-import { ListingFilters, applyFilters, defaultFilters, type Filters } from "@/components/ListingFilters";
-import { Pagination } from "@/components/Pagination";
-import { formatUsd } from "@/data/listings";
 import { useAllListings } from "@/hooks/use-all-listings";
 import { useLocale } from "@/i18n/locale-context";
-import { Badge } from "@/components/ui/badge";
-
-const PAGE_SIZE = 6;
-
-const searchSchema = z.object({
-  q: z.string().optional().catch(undefined),
-  brand: z.string().optional().catch(undefined),
-  minYear: z.string().optional().catch(undefined),
-  maxPrice: z.string().optional().catch(undefined),
-  maxMileage: z.string().optional().catch(undefined),
-  sort: z.string().optional().catch(undefined),
-  page: z.number().int().positive().optional().catch(undefined),
-});
+import { heroVideoUrl } from "@/config/contact";
+import type { TranslationKey } from "@/i18n/translations";
 
 export const Route = createFileRoute("/")({
-  validateSearch: searchSchema,
   head: () => ({
     meta: [
       { title: "AutoSale — Achat et vente de voitures d'exception à prix fixe" },
@@ -43,160 +26,153 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+const trustItems: { icon: typeof ShieldCheck; title: TranslationKey; text: TranslationKey }[] = [
+  { icon: ShieldCheck, title: "home.trust1.title", text: "home.trust1.text" },
+  { icon: BadgeCheck, title: "home.trust2.title", text: "home.trust2.text" },
+  { icon: Truck, title: "home.trust3.title", text: "home.trust3.text" },
+];
+
+const testimonialKeys: { nameKey: TranslationKey; textKey: TranslationKey }[] = [
+  { nameKey: "home.testimonial1.name", textKey: "home.testimonial1.text" },
+  { nameKey: "home.testimonial2.name", textKey: "home.testimonial2.text" },
+  { nameKey: "home.testimonial3.name", textKey: "home.testimonial3.text" },
+  { nameKey: "home.testimonial4.name", textKey: "home.testimonial4.text" },
+];
+
 function Home() {
-  const search = Route.useSearch();
-  const navigate = useNavigate({ from: Route.fullPath });
   const { t } = useLocale();
   const { listings } = useAllListings();
-
-  const filters: Filters = {
-    q: search.q ?? defaultFilters.q,
-    brand: search.brand ?? defaultFilters.brand,
-    minYear: search.minYear ?? defaultFilters.minYear,
-    maxPrice: search.maxPrice ?? defaultFilters.maxPrice,
-    maxMileage: search.maxMileage ?? defaultFilters.maxMileage,
-    sort: search.sort ?? defaultFilters.sort,
-  };
-  const page = search.page ?? 1;
-
-  function setFilters(next: Filters) {
-    navigate({
-      search: {
-        q: next.q || undefined,
-        brand: next.brand !== "all" ? next.brand : undefined,
-        minYear: next.minYear !== "all" ? next.minYear : undefined,
-        maxPrice: next.maxPrice !== "all" ? next.maxPrice : undefined,
-        maxMileage: next.maxMileage !== "all" ? next.maxMileage : undefined,
-        sort: next.sort !== defaultFilters.sort ? next.sort : undefined,
-        page: undefined,
-      },
-      replace: true,
-    });
-  }
-
-  function setPage(next: number) {
-    navigate({ search: (prev) => ({ ...prev, page: next > 1 ? next : undefined }) });
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  const available = useMemo(() => listings.filter((l) => l.status === "available"), [listings]);
-  const featured = available.find((l) => l.featured) ?? available[0];
-  const rest = available.filter((l) => l.id !== featured?.id);
-
-  const filtered = useMemo(() => applyFilters(rest, filters), [rest, filters]);
-  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const clampedPage = Math.min(page, pageCount);
-  const pageItems = filtered.slice((clampedPage - 1) * PAGE_SIZE, clampedPage * PAGE_SIZE);
-
-  useEffect(() => {
-    if (page > pageCount) setPage(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageCount]);
+  const carouselCars = listings.filter((l) => l.status === "available").slice(0, 12);
+  const loopedCars = carouselCars.length >= 4 ? [...carouselCars, ...carouselCars] : carouselCars;
 
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main id="main-content">
-        {/* Hero */}
-        {featured && (
-          <section className="border-b bg-navy text-white">
-            <div className="container-page grid gap-10 py-12 lg:grid-cols-[1.3fr_1fr] lg:items-center">
+        {/* Hero — looping muted video background */}
+        <section className="relative flex min-h-[78vh] items-center overflow-hidden bg-navy text-white">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover"
+            poster="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1600&q=60"
+          >
+            <source src={heroVideoUrl} type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/55 to-black/75" />
+
+          <div className="container-page relative z-10 py-20 text-center">
+            <h1 className="animate-fade-in-up mx-auto max-w-3xl text-4xl font-bold leading-[1.08] md:text-6xl">
+              {t("home.heroTitle")}
+            </h1>
+            <p
+              className="animate-fade-in-up mx-auto mt-5 max-w-xl text-lg text-white/80"
+              style={{ animationDelay: "0.15s" }}
+            >
+              {t("home.heroSubtitle")}
+            </p>
+            <div
+              className="animate-fade-in-up mt-8 flex flex-wrap items-center justify-center gap-3"
+              style={{ animationDelay: "0.3s" }}
+            >
               <Link
-                to="/listings/$listingId"
-                params={{ listingId: featured.id }}
-                className="group relative overflow-hidden rounded-2xl border border-white/10"
+                to="/shop"
+                className="inline-flex rounded-md bg-accent px-7 py-3 text-sm font-semibold uppercase tracking-wide text-accent-foreground hover:opacity-90"
               >
-                <img
-                  src={featured.images[0]}
-                  alt={featured.title}
-                  width={1400}
-                  height={900}
-                  className="aspect-[3/2] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0" />
-                <div className="absolute left-4 top-4 flex gap-2">
-                  <Badge className="bg-accent text-accent-foreground">Disponible</Badge>
-                </div>
+                {t("home.ctaShop")}
               </Link>
-              <div>
-                <span className="eyebrow text-accent">{t("home.featured")}</span>
-                <h1 className="mt-2 text-4xl font-bold leading-[1.05] md:text-5xl">
-                  {featured.year} {featured.brand} {featured.model}
-                </h1>
-                <p className="mt-3 text-white/70">
-                  {featured.mileage} · {featured.fuelType} · {featured.location}
-                </p>
-                <div className="mt-6 border-y border-white/15 py-5">
-                  <span className="eyebrow text-white/50">{t("home.price")}</span>
-                  <p className="text-3xl font-bold">{formatUsd(featured.price)}</p>
+              <Link
+                to="/contact"
+                className="inline-flex rounded-md border border-white/40 px-7 py-3 text-sm font-semibold uppercase tracking-wide text-white hover:bg-white/10"
+              >
+                {t("home.ctaContact")}
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Trust section */}
+        <section className="border-b bg-card py-14">
+          <div className="container-page grid gap-10 sm:grid-cols-3">
+            {trustItems.map(({ icon: Icon, title, text }) => (
+              <div key={title} className="flex flex-col items-center text-center sm:items-start sm:text-left">
+                <div className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Icon className="size-6" />
                 </div>
-                <div className="mt-6 flex flex-wrap gap-3">
+                <h3 className="mt-4 text-lg font-semibold">{t(title)}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{t(text)}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Car carousel — no frame, glowing circular podium under each car */}
+        {carouselCars.length > 0 && (
+          <section className="overflow-hidden py-16">
+            <p className="eyebrow text-center text-primary">{t("home.carouselIntro")}</p>
+            <div className="relative mt-8 overflow-hidden">
+              <div className="animate-marquee flex w-max gap-14 px-6">
+                {loopedCars.map((car, i) => (
                   <Link
+                    key={`${car.id}-${i}`}
                     to="/listings/$listingId"
-                    params={{ listingId: featured.id }}
-                    className="inline-flex rounded-md bg-accent px-6 py-3 text-sm font-semibold uppercase tracking-wide text-accent-foreground hover:opacity-90"
+                    params={{ listingId: car.id }}
+                    className="group relative flex w-56 shrink-0 flex-col items-center"
                   >
-                    {t("home.viewListing")}
+                    <div className="podium-glow absolute bottom-2 h-10 w-44 rounded-full" />
+                    <div className="relative z-10 flex h-32 w-full items-center justify-center overflow-hidden">
+                      <img
+                        src={car.images[0]}
+                        alt={car.title}
+                        width={400}
+                        height={240}
+                        className="h-full w-full object-cover drop-shadow-2xl transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                    <span className="relative z-10 mt-3 text-center text-xs font-semibold text-muted-foreground">
+                      {car.year} {car.brand} {car.model}
+                    </span>
                   </Link>
-                  <Link
-                    to="/sell-car"
-                    className="inline-flex rounded-md border border-white/25 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white hover:bg-white/10"
-                  >
-                    {t("home.sellCar")}
-                  </Link>
-                </div>
+                ))}
               </div>
             </div>
           </section>
         )}
 
-        {/* Search & filters */}
-        <section className="container-page -mt-6 relative z-10">
-          <ListingFilters filters={filters} onChange={setFilters} />
-        </section>
-
-        {/* Grid */}
-        <section className="container-page py-12">
-          <div className="flex items-end justify-between">
-            <div>
-              <h2 className="text-3xl font-bold">{t("home.availableListings")}</h2>
-              <p className="mt-1 text-sm text-muted-foreground" aria-live="polite">
-                {filtered.length} résultat{filtered.length > 1 ? "s" : ""}
-              </p>
-            </div>
-            <Link to="/sold-cars" className="text-sm font-semibold text-primary hover:underline">
-              {t("home.seeSold")}
-            </Link>
-          </div>
-          {pageItems.length > 0 ? (
-            <>
-              <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {pageItems.map((listing) => (
-                  <ListingCard key={listing.id} listing={listing} />
-                ))}
-              </div>
-              <Pagination page={clampedPage} pageCount={pageCount} onChange={setPage} />
-            </>
-          ) : (
-            <div className="mt-10 rounded-xl border border-dashed p-12 text-center text-muted-foreground">
-              {t("home.noResults")}
-            </div>
-          )}
-        </section>
-
-        {/* Value props */}
-        <section className="border-y bg-card py-14">
-          <div className="container-page grid gap-10 md:grid-cols-3">
-            {[
-              [t("home.vp1.title"), t("home.vp1.text")],
-              [t("home.vp2.title"), t("home.vp2.text")],
-              [t("home.vp3.title"), t("home.vp3.text")],
-            ].map(([title, text]) => (
-              <div key={title}>
-                <h3 className="text-xl font-semibold">{title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{text}</p>
-              </div>
-            ))}
+        {/* Testimonials */}
+        <section className="border-t bg-card py-16">
+          <p className="eyebrow text-center text-primary">{t("home.testimonialsIntro")}</p>
+          <h2 className="mt-2 text-center text-3xl font-bold">{t("home.testimonialsTitle")}</h2>
+          <div className="container-page mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {testimonialKeys.map(({ nameKey, textKey }, i) => {
+              const name = t(nameKey);
+              const initials = name
+                .split(" ")
+                .map((p) => p[0])
+                .join("")
+                .slice(0, 2);
+              return (
+                <div key={nameKey} className="rounded-xl border bg-background p-5">
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-10 items-center justify-center rounded-full bg-navy text-xs font-bold text-white">
+                      {initials}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">{name}</p>
+                      <div className="flex gap-0.5 text-accent">
+                        {Array.from({ length: 5 }).map((_, star) => (
+                          <Star key={star} className="size-3 fill-accent" />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="mt-3 text-sm text-muted-foreground">"{t(textKey)}"</p>
+                  <span className="sr-only">{i + 1}</span>
+                </div>
+              );
+            })}
           </div>
         </section>
       </main>

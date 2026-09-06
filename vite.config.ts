@@ -12,4 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // The Cloudflare D1 binding used by src/backend/store.ts is declared in
+  // wrangler.json at the project root (not here) — nitro auto-merges that
+  // file into its generated Cloudflare config during the build. See
+  // README → "Database" for setup steps.
 });

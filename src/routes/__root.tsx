@@ -16,7 +16,9 @@ import { FavoritesProvider } from "@/context/favorites-context";
 import { LocaleProvider } from "@/i18n/locale-context";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { useLocale } from "@/i18n/locale-context";
 import { Toaster } from "@/components/ui/sonner";
+import { CookieConsent } from "@/components/CookieConsent";
 
 // Runs before hydration to avoid a light/dark flash on load.
 const themeInitScript = `
@@ -30,23 +32,22 @@ const themeInitScript = `
 `;
 
 function NotFoundComponent() {
+  const { t } = useLocale();
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
       <main id="main-content" className="flex flex-1 items-center justify-center px-4 py-24">
         <div className="max-w-md text-center">
-          <span className="eyebrow text-accent">Erreur 404</span>
+          <span className="eyebrow text-accent">{t("notFound.badge")}</span>
           <h1 className="font-display mt-2 text-7xl font-bold text-foreground">404</h1>
-          <h2 className="mt-4 text-xl font-semibold text-foreground">Page introuvable</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            La page que vous cherchez n'existe pas ou a été déplacée.
-          </p>
+          <h2 className="mt-4 text-xl font-semibold text-foreground">{t("notFound.title")}</h2>
+          <p className="mt-2 text-sm text-muted-foreground">{t("notFound.body")}</p>
           <div className="mt-6 flex flex-wrap justify-center gap-2">
             <Link
               to="/"
               className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold uppercase tracking-wide text-primary-foreground transition-colors hover:opacity-90"
             >
-              <Compass className="size-4" /> Retour à l'accueil
+              <Compass className="size-4" /> {t("notFound.backHome")}
             </Link>
           </div>
         </div>
@@ -159,6 +160,7 @@ function RootComponent() {
           </a>
           <Outlet />
           <Toaster position="bottom-right" richColors />
+          <CookieConsent />
         </FavoritesProvider>
       </LocaleProvider>
     </QueryClientProvider>

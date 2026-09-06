@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { formatUsd } from "@/data/listings";
 import { useAllListings } from "@/hooks/use-all-listings";
+import { useLocale } from "@/i18n/locale-context";
 
 export const Route = createFileRoute("/sold-cars")({
   head: () => ({
@@ -22,19 +23,18 @@ export const Route = createFileRoute("/sold-cars")({
 
 function SoldCars() {
   const { listings } = useAllListings();
+  const { t, locale } = useLocale();
   const sold = listings.filter((l) => l.status === "sold");
 
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main id="main-content" className="container-page py-12">
-        <h1 className="text-4xl font-bold">Voitures vendues</h1>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
-          Un aperçu des dernières ventes conclues sur AutoSale — prix de vente, date et localisation.
-        </p>
+        <h1 className="text-4xl font-bold">{t("soldCars.title")}</h1>
+        <p className="mt-2 max-w-2xl text-muted-foreground">{t("soldCars.subtitle")}</p>
 
         <p className="mt-6 text-sm font-semibold text-muted-foreground">
-          {sold.length} voiture{sold.length > 1 ? "s" : ""} vendue{sold.length > 1 ? "s" : ""}
+          {sold.length} {t("soldCars.soldCountSuffix")}
         </p>
 
         {sold.length > 0 ? (
@@ -56,7 +56,7 @@ function SoldCars() {
                     className="h-full w-full object-cover grayscale-[0.3] transition-transform duration-500 group-hover:scale-105"
                   />
                   <span className="absolute left-3 top-3 rounded-md bg-navy px-2 py-1 text-xs font-bold uppercase tracking-wide text-white">
-                    Vendu
+                    {t("soldCars.soldBadge")}
                   </span>
                 </div>
                 <div className="p-4">
@@ -68,19 +68,19 @@ function SoldCars() {
                   </p>
                   <div className="mt-4 flex items-end justify-between border-t pt-3">
                     <div>
-                      <span className="eyebrow block">Prix de vente</span>
+                      <span className="eyebrow block">{t("soldCars.salePrice")}</span>
                       <span className="text-xl font-bold text-foreground">{formatUsd(listing.price)}</span>
                     </div>
                     <div className="text-right">
-                      <span className="eyebrow block">Vendue le</span>
+                      <span className="eyebrow block">{t("soldCars.soldOn")}</span>
                       <span className="text-sm font-semibold text-primary">
                         {listing.soldAt
-                          ? new Date(listing.soldAt).toLocaleDateString("fr-FR", {
+                          ? new Date(listing.soldAt).toLocaleDateString(locale === "fr" ? "fr-FR" : "en-US", {
                               day: "numeric",
                               month: "long",
                               year: "numeric",
                             })
-                          : "Récemment"}
+                          : t("soldCars.recently")}
                       </span>
                     </div>
                   </div>
@@ -90,7 +90,7 @@ function SoldCars() {
           </div>
         ) : (
           <div className="mt-10 rounded-xl border border-dashed p-12 text-center text-muted-foreground">
-            Aucune voiture vendue pour le moment. Les ventes conclues sur AutoSale apparaîtront ici.
+            {t("soldCars.empty")}
           </div>
         )}
       </main>

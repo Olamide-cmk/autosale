@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, expect } from "vitest";
+import { describe, it, expect } from "vitest";
 import { createListing, getSubmittedListings, recordPurchase, getPurchasedListingIds } from "./store";
 
 const baseListing = {
@@ -19,29 +19,29 @@ const baseListing = {
 };
 
 describe("listings store", () => {
-  it("creates a listing with a generated id and available status", () => {
-    const listing = createListing(baseListing);
+  it("creates a listing with a generated id and available status", async () => {
+    const listing = await createListing(baseListing);
     expect(listing.id).toMatch(/^listing_/);
     expect(listing.status).toBe("available");
 
-    const all = getSubmittedListings();
+    const all = await getSubmittedListings();
     expect(all.some((l) => l.id === listing.id)).toBe(true);
   });
 });
 
 describe("purchases store", () => {
-  it("marks a submitted listing as sold once purchased", () => {
-    const listing = createListing(baseListing);
-    recordPurchase(listing.id, "Alex Buyer", "alex@example.com", 22000, "4242");
+  it("marks a submitted listing as sold once purchased", async () => {
+    const listing = await createListing(baseListing);
+    await recordPurchase(listing.id, "Alex Buyer", "alex@example.com", 22000, "4242");
 
-    const all = getSubmittedListings();
+    const all = await getSubmittedListings();
     const updated = all.find((l) => l.id === listing.id);
     expect(updated?.status).toBe("sold");
-    expect(getPurchasedListingIds()).toContain(listing.id);
+    expect(await getPurchasedListingIds()).toContain(listing.id);
   });
 
-  it("tracks purchased ids even for listings the store doesn't own (seed data)", () => {
-    recordPurchase("seed-listing-id", "Alex Buyer", "alex@example.com", 50000, "1111");
-    expect(getPurchasedListingIds()).toContain("seed-listing-id");
+  it("tracks purchased ids even for listings the store doesn't own (seed data)", async () => {
+    await recordPurchase("seed-listing-id", "Alex Buyer", "alex@example.com", 50000, "1111");
+    expect(await getPurchasedListingIds()).toContain("seed-listing-id");
   });
 });

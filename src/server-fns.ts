@@ -8,6 +8,8 @@ import {
   recordPurchase,
   getPurchasedListingIds,
   getPurchaseForListing,
+  incrementHeartCount,
+  getAutoFeaturedListingIds,
 } from "./backend/store";
 
 // --- listings (seller submissions become real, live listings) --------------
@@ -32,18 +34,19 @@ const listingInputSchema = z.object({
 export const submitListingFn = createServerFn({ method: "POST" })
   .validator(listingInputSchema)
   .handler(async ({ data }) => {
-    const listing = createListing(data);
+    const listing = await createListing(data);
     return { id: listing.id };
   });
 
 export const getSubmittedListingsFn = createServerFn({ method: "GET" }).handler(async () => {
-  return getSubmittedListings();
+  return await getSubmittedListings();
 });
 
 export const getSubmittedListingByIdFn = createServerFn({ method: "GET" })
   .validator(z.object({ id: z.string() }))
   .handler(async ({ data }) => {
-    return getSubmittedListings().find((l) => l.id === data.id) ?? null;
+    const all = await getSubmittedListings();
+    return all.find((l) => l.id === data.id) ?? null;
   });
 
 // --- contact seller ----------------------------------------------------
@@ -59,7 +62,7 @@ export const submitContactFn = createServerFn({ method: "POST" })
     }),
   )
   .handler(async ({ data }) => {
-    const contactMessage = addContactMessage(data);
+    const contactMessage = await addContactMessage(data);
     return { id: contactMessage.id };
   });
 
@@ -94,15 +97,28 @@ export const purchaseListingFn = createServerFn({ method: "POST" })
     }),
   )
   .handler(async ({ data }) => {
-    const existing = getPurchaseForListing(data.listingId);
+    const existing = await getPurchaseForListing(data.listingId);
     if (existing) {
       throw new Error("ALREADY_SOLD");
     }
     const last4 = data.cardNumber.slice(-4);
-    const purchase = recordPurchase(data.listingId, data.buyerName, data.buyerEmail, data.amount, last4);
+    const purchase = await recordPurchase(data.listingId, data.buyerName, data.buyerEmail, data.amount, last4);
     return { id: purchase.id, cardLast4: last4 };
   });
 
 export const getPurchasedListingIdsFn = createServerFn({ method: "GET" }).handler(async () => {
-  return getPurchasedListingIds();
+  return await getPurchasedListingIds();
+});
+
+// --- hearts / auto-vedette ---------------------------------------------------
+
+export const incrementHeartFn = createServerFn({ method: "POST" })
+  .validator(z.object({ listingId: z.string() }))
+  .handler(async ({ data }) => {
+    const count = await incrementHeartCount(data.listingId);
+    return { count };
+  });
+
+export const getAutoFeaturedListingIdsFn = createServerFn({ method: "GET" }).handler(async () => {
+  return await getAutoFeaturedListingIds();
 });

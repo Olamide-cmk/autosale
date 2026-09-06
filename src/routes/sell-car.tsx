@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { Input } from "@/components/ui/input";
 import { submitListingFn } from "@/server-fns";
 import { siteContact } from "@/config/contact";
+import { useLocale } from "@/i18n/locale-context";
 
 export const Route = createFileRoute("/sell-car")({
   head: () => ({
@@ -23,8 +24,6 @@ export const Route = createFileRoute("/sell-car")({
   }),
   component: SellCar,
 });
-
-const steps = ["Véhicule", "Photos", "Prix"] as const;
 
 const vehicleSchema = z.object({
   brand: z.string().min(1, "La marque est requise."),
@@ -68,6 +67,8 @@ const stepSchemas = [vehicleSchema, photosSchema, priceSchema];
 
 function SellCar() {
   const navigate = useNavigate();
+  const { t } = useLocale();
+  const steps = [t("sellCar.stepVehicle"), t("sellCar.stepPhotos"), t("sellCar.stepPrice")];
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -138,7 +139,7 @@ function SellCar() {
       setSubmitted(true);
       setTimeout(() => navigate({ to: "/listings/$listingId", params: { listingId: res.id } }), 1800);
     } catch {
-      setSubmitError("Une erreur est survenue lors de la publication. Merci de réessayer.");
+      setSubmitError(t("sellCar.submitError"));
     } finally {
       setSubmitting(false);
     }
@@ -152,10 +153,9 @@ function SellCar() {
           <div className="flex size-16 items-center justify-center rounded-full bg-primary/10">
             <Check className="size-8 text-primary" />
           </div>
-          <h1 className="mt-6 text-3xl font-bold">Annonce publiée</h1>
+          <h1 className="mt-6 text-3xl font-bold">{t("sellCar.published")}</h1>
           <p className="mt-2 max-w-md text-muted-foreground">
-            Votre {form.year} {form.brand} {form.model} est maintenant en ligne. Redirection vers votre
-            annonce…
+            {t("sellCar.yourCar")} {form.year} {form.brand} {form.model} {t("sellCar.nowOnline")}
           </p>
         </main>
         <SiteFooter />
@@ -167,10 +167,8 @@ function SellCar() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main id="main-content" className="container-page py-12">
-        <h1 className="text-4xl font-bold">Vendre ma voiture</h1>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
-          Publication gratuite, prix fixe. Comptez environ 5 minutes.
-        </p>
+        <h1 className="text-4xl font-bold">{t("sellCar.title")}</h1>
+        <p className="mt-2 max-w-2xl text-muted-foreground">{t("sellCar.subtitle")}</p>
 
         {/* Stepper */}
         <ol className="mt-8 flex flex-wrap items-center gap-2 text-sm">
@@ -198,41 +196,41 @@ function SellCar() {
         <form onSubmit={handleSubmit} className="mt-8 max-w-2xl rounded-xl border bg-card p-6">
           {step === 0 && (
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Informations sur le véhicule</h2>
+              <h2 className="text-xl font-semibold">{t("sellCar.vehicleInfo")}</h2>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="eyebrow block">Marque</label>
+                  <label className="eyebrow block">{t("sellCar.brand")}</label>
                   <Input className="mt-1" value={form.brand} onChange={(e) => update("brand", e.target.value)} placeholder="Porsche" />
                   {errors["brand"] && <p className="mt-1 text-xs font-medium text-destructive">{errors["brand"]}</p>}
                 </div>
                 <div>
-                  <label className="eyebrow block">Modèle</label>
+                  <label className="eyebrow block">{t("sellCar.model")}</label>
                   <Input className="mt-1" value={form.model} onChange={(e) => update("model", e.target.value)} placeholder="911 Carrera GTS" />
                   {errors["model"] && <p className="mt-1 text-xs font-medium text-destructive">{errors["model"]}</p>}
                 </div>
                 <div>
-                  <label className="eyebrow block">Année</label>
+                  <label className="eyebrow block">{t("sellCar.year")}</label>
                   <Input className="mt-1" type="number" value={form.year} onChange={(e) => update("year", e.target.value)} placeholder="2023" />
                   {errors["year"] && <p className="mt-1 text-xs font-medium text-destructive">{errors["year"]}</p>}
                 </div>
                 <div>
-                  <label className="eyebrow block">Kilométrage</label>
+                  <label className="eyebrow block">{t("sellCar.mileage")}</label>
                   <Input className="mt-1" value={form.mileage} onChange={(e) => update("mileage", e.target.value)} placeholder="12 000 km" />
                   {errors["mileage"] && <p className="mt-1 text-xs font-medium text-destructive">{errors["mileage"]}</p>}
                 </div>
                 <div>
-                  <label className="eyebrow block">Carburant</label>
-                  <Input className="mt-1" value={form.fuelType} onChange={(e) => update("fuelType", e.target.value)} placeholder="Essence" />
+                  <label className="eyebrow block">{t("sellCar.fuelType")}</label>
+                  <Input className="mt-1" value={form.fuelType} onChange={(e) => update("fuelType", e.target.value)} placeholder={t("sellCar.fuelExample")} />
                   {errors["fuelType"] && <p className="mt-1 text-xs font-medium text-destructive">{errors["fuelType"]}</p>}
                 </div>
                 <div>
-                  <label className="eyebrow block">Transmission</label>
+                  <label className="eyebrow block">{t("sellCar.transmission")}</label>
                   <Input className="mt-1" value={form.transmission} onChange={(e) => update("transmission", e.target.value)} placeholder="Automatique 8 rapports" />
                   {errors["transmission"] && <p className="mt-1 text-xs font-medium text-destructive">{errors["transmission"]}</p>}
                 </div>
               </div>
               <div>
-                <label className="eyebrow block">Description (options, historique, modifications)</label>
+                <label className="eyebrow block">{t("sellCar.description")}</label>
                 <textarea
                   className="mt-1 min-h-28 w-full rounded-md border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                   value={form.description}
@@ -246,11 +244,8 @@ function SellCar() {
 
           {step === 1 && (
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Photos du véhicule</h2>
-              <p className="text-sm text-muted-foreground">
-                Ajoutez au moins 3 photos (extérieur, intérieur, moteur). Ces photos restent sur votre
-                appareil dans cette démonstration — elles ne sont pas envoyées au serveur.
-              </p>
+              <h2 className="text-xl font-semibold">{t("sellCar.photosTitle")}</h2>
+              <p className="text-sm text-muted-foreground">{t("sellCar.photosHint")}</p>
               <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
                 {form.photos.map((src, i) => (
                   <div key={src} className="group relative aspect-square overflow-hidden rounded-lg border">
@@ -259,7 +254,7 @@ function SellCar() {
                       type="button"
                       onClick={() => removePhoto(i)}
                       className="absolute right-1 top-1 flex size-6 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity group-hover:opacity-100"
-                      aria-label="Retirer la photo"
+                      aria-label={t("sellCar.removePhoto")}
                     >
                       <X className="size-3.5" />
                     </button>
@@ -268,39 +263,37 @@ function SellCar() {
                 {form.photos.length < 8 && (
                   <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed text-muted-foreground hover:border-accent hover:text-accent">
                     <ImagePlus className="size-6" />
-                    <span className="text-xs font-semibold">Ajouter</span>
+                    <span className="text-xs font-semibold">{t("sellCar.addPhoto")}</span>
                     <input type="file" accept="image/*" multiple className="hidden" onChange={(e) => handlePhotoSelect(e.target.files)} />
                   </label>
                 )}
               </div>
               {errors["photos"] && <p className="text-xs font-medium text-destructive">{errors["photos"]}</p>}
-              <p className="text-xs text-muted-foreground">{form.photos.length} / 8 photos ajoutées</p>
+              <p className="text-xs text-muted-foreground">
+                {form.photos.length} {t("sellCar.photosCountSuffix")}
+              </p>
             </div>
           )}
 
           {step === 2 && (
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Prix demandé</h2>
+              <h2 className="text-xl font-semibold">{t("sellCar.priceTitle")}</h2>
               <div>
-                <label className="eyebrow block">Prix fixe (USD)</label>
+                <label className="eyebrow block">{t("sellCar.fixedPrice")}</label>
                 <Input className="mt-1" type="number" value={form.price} onChange={(e) => update("price", e.target.value)} placeholder="75000" />
                 {errors["price"] && <p className="mt-1 text-xs font-medium text-destructive">{errors["price"]}</p>}
-                <p className="mt-2 text-sm text-muted-foreground">
-                  C'est le prix affiché sur votre annonce. Les acheteurs pourront ensuite vous contacter
-                  directement pour négocier ou organiser une visite.
-                </p>
+                <p className="mt-2 text-sm text-muted-foreground">{t("sellCar.priceHint")}</p>
               </div>
 
               <div className="rounded-lg bg-muted p-4 text-sm text-muted-foreground">
-                <p className="font-semibold text-foreground">Récapitulatif</p>
+                <p className="font-semibold text-foreground">{t("sellCar.summary")}</p>
                 <p className="mt-1">
                   {form.year || "—"} {form.brand || "—"} {form.model || "—"} · {form.mileage || "—"} ·{" "}
-                  {form.photos.length} photo{form.photos.length > 1 ? "s" : ""} ·{" "}
+                  {form.photos.length} {t("sellCar.photoWord")} ·{" "}
                   {form.price ? `${Number(form.price).toLocaleString("en-US")} $` : "—"}
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">
-                  Contact affiché sur l'annonce : {siteContact.name} · {siteContact.phone} ·{" "}
-                  {siteContact.location}
+                  {t("sellCar.contactShown")} {siteContact.name} · {siteContact.phone} · {siteContact.location}
                 </p>
               </div>
             </div>
@@ -314,7 +307,7 @@ function SellCar() {
               disabled={step === 0}
               className="rounded-md border px-5 py-2.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-40"
             >
-              Précédent
+              {t("sellCar.previous")}
             </button>
             {step < steps.length - 1 ? (
               <button
@@ -322,7 +315,7 @@ function SellCar() {
                 onClick={() => validateStep(step) && setStep((s) => Math.min(steps.length - 1, s + 1))}
                 className="rounded-md bg-primary px-6 py-2.5 text-sm font-semibold uppercase tracking-wide text-primary-foreground hover:opacity-90"
               >
-                Continuer
+                {t("sellCar.continue")}
               </button>
             ) : (
               <button
@@ -330,7 +323,7 @@ function SellCar() {
                 disabled={submitting}
                 className="rounded-md bg-accent px-6 py-2.5 text-sm font-semibold uppercase tracking-wide text-accent-foreground hover:opacity-90 disabled:opacity-60"
               >
-                {submitting ? "Publication…" : "Publier l'annonce"}
+                {submitting ? t("sellCar.publishing") : t("sellCar.publish")}
               </button>
             )}
           </div>

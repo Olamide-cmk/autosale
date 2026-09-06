@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { useLocale } from "@/i18n/locale-context";
+import { aboutTrustImage, aboutCarImage } from "@/config/contact";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -13,35 +15,41 @@ export const Route = createFileRoute("/about")({
 });
 
 function About() {
+  const { t } = useLocale();
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main id="main-content" className="container-page max-w-3xl py-14">
-        <span className="eyebrow text-primary">Notre histoire</span>
-        <h1 className="mt-2 text-4xl font-bold">À propos d'AutoSale</h1>
-        <div className="prose mt-6 space-y-5 text-muted-foreground">
-          <p>
-            AutoSale est né d'un constat simple : les passionnés d'automobile méritent une plateforme
-            de vente aussi rigoureuse dans ses annonces qu'exigeante sur la qualité des voitures
-            présentées. Pas de photos floues, pas d'historique caché — chaque annonce est documentée
-            en détail, défauts compris.
-          </p>
-          <p>
-            Nous mettons en relation des vendeurs particuliers et professionnels avec des acheteurs
-            sérieux, sans intermédiaire ni enchère. Vous fixez votre prix, l'acheteur vous contacte
-            directement pour négocier et organiser la visite.
-          </p>
-          <p>
-            De la youngtimer de collection à la sportive moderne en passant par les classiques
-            restaurées, notre catalogue reflète la diversité des passions automobiles — sans jamais
-            sacrifier la transparence.
-          </p>
-          <h2 className="text-2xl font-bold text-foreground">Notre engagement</h2>
+        <span className="eyebrow text-primary">{t("about.eyebrow")}</span>
+        <h1 className="mt-2 text-4xl font-bold">{t("about.title")}</h1>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <img
+            src={aboutTrustImage}
+            alt={t("about.trustImageAlt")}
+            width={700}
+            height={500}
+            className="aspect-[4/3] w-full rounded-xl object-cover"
+          />
+          <img
+            src={aboutCarImage}
+            alt={t("about.carImageAlt")}
+            width={700}
+            height={500}
+            className="aspect-[4/3] w-full rounded-xl object-cover"
+          />
+        </div>
+
+        <div className="prose mt-8 space-y-5 text-muted-foreground">
+          <p>{t("about.p1")}</p>
+          <p>{t("about.p2")}</p>
+          <p>{t("about.p3")}</p>
+          <h2 className="text-2xl font-bold text-foreground">{t("about.commitmentTitle")}</h2>
           <ul className="list-disc space-y-2 pl-5">
-            <li>Publication d'annonce gratuite, sans commission cachée.</li>
-            <li>Des annonces rédigées avec des spécifications techniques complètes.</li>
-            <li>Un contact direct entre acheteur et vendeur, sans intermédiaire.</li>
-            <li>Un support dédié du dépôt de l'annonce jusqu'à la remise des clés.</li>
+            <li>{t("about.li1")}</li>
+            <li>{t("about.li2")}</li>
+            <li>{t("about.li3")}</li>
+            <li>{t("about.li4")}</li>
           </ul>
         </div>
       </main>
