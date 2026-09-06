@@ -28,9 +28,6 @@ function ReturnPolicy() {
       <main id="main-content" className="container-page max-w-3xl py-14">
         <h1 className="text-4xl font-bold">{t("returnPolicy.title")}</h1>
         <p className="mt-2 text-sm text-muted-foreground">{t("returnPolicy.lastUpdated")}</p>
-        <div className="mt-4 rounded-lg border border-accent/40 bg-accent/10 p-4 text-sm">
-          <strong>{t("legal.warningTitle")}</strong> {t("legal.warningBody")}
-        </div>
         <div className="mt-8 space-y-8">
           {sectionKeys.map((s) => (
             <section key={s.title}>
