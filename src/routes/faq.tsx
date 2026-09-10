@@ -14,7 +14,7 @@ export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
       { title: "Comment ça marche — AutoSale" },
-      { name: "description", content: "Questions fréquentes sur la vente, l'achat et le contact vendeur." },
+      { name: "description", content: "Questions fréquentes sur l'achat et le contact vendeur." },
     ],
   }),
   component: Faq,
@@ -23,10 +23,6 @@ export const Route = createFileRoute("/faq")({
 const faqKeys: { q: TranslationKey; a: TranslationKey }[] = [
   { q: "faq.q1", a: "faq.a1" },
   { q: "faq.q2", a: "faq.a2" },
-  { q: "faq.q3", a: "faq.a3" },
-  { q: "faq.q4", a: "faq.a4" },
-  { q: "faq.q5", a: "faq.a5" },
-  { q: "faq.q6", a: "faq.a6" },
 ];
 
 function Faq() {

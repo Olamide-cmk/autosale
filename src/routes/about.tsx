@@ -3,6 +3,12 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useLocale } from "@/i18n/locale-context";
 import { aboutTrustImage, aboutCarImage } from "@/config/contact";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -51,6 +57,23 @@ function About() {
             <li>{t("about.li3")}</li>
             <li>{t("about.li4")}</li>
           </ul>
+
+          <h2 className="text-2xl font-bold text-foreground">{t("about.howTitle")}</h2>
+          <p>{t("about.howSubtitle")}</p>
+          <Accordion type="single" collapsible className="not-prose">
+            <AccordionItem value="how-1">
+              <AccordionTrigger className="text-left text-base font-semibold">
+                {t("about.howQ1")}
+              </AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">{t("about.howA1")}</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="how-2">
+              <AccordionTrigger className="text-left text-base font-semibold">
+                {t("about.howQ2")}
+              </AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">{t("about.howA2")}</AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </main>
       <SiteFooter />

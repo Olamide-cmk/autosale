@@ -20,7 +20,6 @@ const sectionKeys: { title: TranslationKey; body: TranslationKey }[] = [
   { title: "terms.s3title", body: "terms.s3body" },
   { title: "terms.s4title", body: "terms.s4body" },
   { title: "terms.s5title", body: "terms.s5body" },
-  { title: "terms.s6title", body: "terms.s6body" },
 ];
 
 function Terms() {

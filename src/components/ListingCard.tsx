@@ -54,6 +54,11 @@ export function ListingCard({ listing, priority }: { listing: CarListing; priori
         <h3 className="truncate text-lg font-semibold leading-tight text-foreground">
           {listing.year} {listing.brand} {listing.model}
         </h3>
+        {listing.category && (
+          <Badge variant="outline" className="mt-1.5 text-[11px] font-medium text-muted-foreground">
+            {listing.category}
+          </Badge>
+        )}
         <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
           <span className="flex items-center gap-1">
             <Gauge className="size-3.5" /> {listing.mileage}

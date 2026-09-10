@@ -1,7 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import {
-  createListing,
   getSubmittedListings,
   addContactMessage,
   addNewsletterSignup,
@@ -12,31 +11,7 @@ import {
   getAutoFeaturedListingIds,
 } from "./backend/store";
 
-// --- listings (seller submissions become real, live listings) --------------
-
-const listingInputSchema = z.object({
-  title: z.string().min(1),
-  brand: z.string().min(1),
-  model: z.string().min(1),
-  year: z.number().int().min(1900).max(2100),
-  price: z.number().positive(),
-  mileage: z.string().min(1),
-  fuelType: z.string().min(1),
-  transmission: z.string().min(1),
-  location: z.string().min(1),
-  description: z.string(),
-  images: z.array(z.string()),
-  sellerName: z.string().min(1),
-  sellerPhone: z.string().min(1),
-  sellerEmail: z.string().email(),
-});
-
-export const submitListingFn = createServerFn({ method: "POST" })
-  .validator(listingInputSchema)
-  .handler(async ({ data }) => {
-    const listing = await createListing(data);
-    return { id: listing.id };
-  });
+// --- listings ----------------------------------------------------------
 
 export const getSubmittedListingsFn = createServerFn({ method: "GET" }).handler(async () => {
   return await getSubmittedListings();
